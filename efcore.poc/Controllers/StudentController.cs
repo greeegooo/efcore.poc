@@ -1,29 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using efcore.poc.Domain;
+using efcore.poc.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace efcore.poc.Controllers
 {
     [ApiController]
-    [Route("[students]")]
+    [Route("api/students")]
     public class StudentController : ControllerBase
     {
         private readonly ILogger<StudentController> _logger;
+        private readonly SchoolContext _context;
 
-        public StudentController(ILogger<StudentController> logger)
+        public StudentController(
+            ILogger<StudentController> logger,
+            SchoolContext context)
         {
             _logger = logger;
-        }
+            _context = context;        }
 
         [HttpGet]
-        public IEnumerable<Student> Get()
+        public async Task<IEnumerable<Student>> GetAsync()
         {
-            _logger.LogInformation("Obteniendo pronósticos");
+            _logger.LogInformation("Getting students");
 
-            return null;
+            var students = _context.Students.ToListAsync();
+
+            return await students;
         }
     }
 }

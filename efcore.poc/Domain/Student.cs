@@ -15,6 +15,6 @@ namespace efcore.poc.Domain
 
         public DateTime EnrollmentDate { get; set; }
 
-        public ICollection<Enrollment> Enrolments { get; set; }
+        public ICollection<Enrollment> Enrollments { get; set; }
     }
 }
