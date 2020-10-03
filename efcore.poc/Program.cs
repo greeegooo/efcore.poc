@@ -1,5 +1,7 @@
 using System;
+using efcore.poc.Repositories;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
@@ -14,7 +16,15 @@ namespace efcore.poc
             try
             {
                 log.Info("Init main");
-                CreateHostBuilder(args).Build().Run();
+
+                var host = CreateHostBuilder(args).Build();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<SchoolContext>();
+                    DbInitializer.Initialize(context);
+                } 
+                    
+                host.Run();
             }
             catch(Exception ex)
             {
