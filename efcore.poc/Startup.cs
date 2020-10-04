@@ -31,6 +31,15 @@ namespace efcore.poc
 
             services.AddDbContext<SchoolContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddCors(options => 
+            {
+                options.AddPolicy("Policy",
+                    builder => 
+                    {
+                        builder.WithOrigins("http://192.168.0.175:3000/", "http://localhost:3000");
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +53,8 @@ namespace efcore.poc
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

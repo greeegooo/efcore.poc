@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using efcore.poc.Domain;
 using efcore.poc.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,8 +21,10 @@ namespace efcore.poc.Controllers
             SchoolContext context)
         {
             _logger = logger;
-            _context = context;        }
+            _context = context;        
+        }
 
+        [EnableCors("Policy")]
         [HttpGet]
         public async Task<IEnumerable<Student>> GetAsync()
         {
